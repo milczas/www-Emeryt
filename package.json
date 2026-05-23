@@ -1,0 +1,24 @@
+{
+  "name": "com.tomek.nowaemerytura",
+  "displayName": "Nowa Emerytura",
+  "version": "1.0.0",
+  "description": "Licznik emerytalny z zaawansowanymi statystykami.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Tomek",
+  "license": "ISC",
+  "devDependencies": {
+    "cordova-android": "^10.1.2"
+  },
+  "cordova": {
+    "plugins": {},
+    "platforms": [
+      "android"
+    ]
+  }
+}
