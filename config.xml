@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.tomek.nowaemerytura" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Nowa Emerytura</name>
+    <description>Licznik emerytalny z zaawansowanymi statystykami.</description>
+    <author email="tomek@example.com" href="http://github.com.com">Tomek</author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="Fullscreen" value="false" />
+    
+    <platform name="android">
+        <icon src="icon.png" />
+    </platform>
+</widget>
