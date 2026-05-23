@@ -1,1 +1,48 @@
+name: Build Android APK
 
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Pobieranie kodu repozytorium
+      uses: actions/checkout@v4
+
+    - name: Konfiguracja Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Konfiguracja środowiska Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+
+    - name: Konfiguracja środowiska Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: '7.6.3'
+
+    - name: Instalacja Android Build Tools 33.0.2
+      run: echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;33.0.2"
+
+    - name: Instalacja środowiska Cordova
+      run: npm install -g cordova
+
+    - name: Instalacja zaleznosci projektu
+      run: npm install
+
+    - name: Budowanie pliku APK
+      run: |
+        cordova platform add android
+        cordova build android
+
+    - name: Udostepnienie pliku APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: Liczniki-ROD-App
+        path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
