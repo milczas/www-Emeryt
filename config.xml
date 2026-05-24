@@ -1,23 +1,27 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.tomek.nowaemerytura" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.tomek.nowaemerytura" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>Nowa Emerytura</name>
     <description>Licznik emerytalny z zaawansowanymi statystykami.</description>
-    <author email="tomek@example.com" href="http://github.com.com">Tomasz Mlicki</author>
+    <author email="tomek@example.com" href="http://example.com">Tomasz Mlicki</author>
+    
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
-    <preference name="Orientation" value="portrait" />
-    <preference name="Fullscreen" value="false" />
-    
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+
+    <preference name="ScrollEnabled" value="true" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+
     <platform name="android">
-        <platform name="android">
-    <icon background="res/mipmap-ldpi/ic_launcher_background.png" foreground="res/mipmap-ldpi/ic_launcher_foreground.png" density="ldpi" />
-    <icon background="res/mipmap-mdpi/ic_launcher_background.png" foreground="res/mipmap-mdpi/ic_launcher_foreground.png" density="mdpi" />
-    <icon background="res/mipmap-hdpi/ic_launcher_background.png" foreground="res/mipmap-hdpi/ic_launcher_foreground.png" density="hdpi" />
-    <icon background="res/mipmap-xhdpi/ic_launcher_background.png" foreground="res/mipmap-xhdpi/ic_launcher_foreground.png" density="xhdpi" />
-    <icon background="res/mipmap-xxhdpi/ic_launcher_background.png" foreground="res/mipmap-xxhdpi/ic_launcher_foreground.png" density="xxhdpi" />
-    <icon background="res/mipmap-xxxhdpi/ic_launcher_background.png" foreground="res/mipmap-xxxhdpi/ic_launcher_foreground.png" density="xxxhdpi" />
-</platform>
+        <icon background="res/mipmap-ldpi/ic_launcher_background.png" foreground="res/mipmap-ldpi/ic_launcher_foreground.png" density="ldpi" />
+        <icon background="res/mipmap-mdpi/ic_launcher_background.png" foreground="res/mipmap-mdpi/ic_launcher_foreground.png" density="mdpi" />
+        <icon background="res/mipmap-hdpi/ic_launcher_background.png" foreground="res/mipmap-hdpi/ic_launcher_foreground.png" density="hdpi" />
+        <icon background="res/mipmap-xhdpi/ic_launcher_background.png" foreground="res/mipmap-xhdpi/ic_launcher_foreground.png" density="xhdpi" />
+        <icon background="res/mipmap-xxhdpi/ic_launcher_background.png" foreground="res/mipmap-xxhdpi/ic_launcher_foreground.png" density="xxhdpi" />
+        <icon background="res/mipmap-xxxhdpi/ic_launcher_background.png" foreground="res/mipmap-xxxhdpi/ic_launcher_foreground.png" density="xxxhdpi" />
     </platform>
 </widget>
