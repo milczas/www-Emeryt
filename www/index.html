@@ -2,31 +2,1176 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Nieskończone generowanie tekstu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licznik Emerytalny - Tomek</title>
     <style>
-        body {
-            font-family: sans-serif;
+        /* Animacja płynnego przejścia kolorów tła */
+        @keyframes gradientBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Poprawione, żywe tło z płynną animacją gradientu */
+        body, html {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            width: 100%;
+            background: linear-gradient(-45deg, #050a18, #0a1128, #100c24, #050a18);
+            background-size: 400% 400%;
+            animation: gradientBg 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: white;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        /* Karta główna licznika z efektem nowoczesnego szkła (Glassmorphism) */
+        .retirement-card {
+            background: rgba(16, 20, 38, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px 15px;
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(72, 49, 212, 0.1);
+            width: 95%;
+            max-width: 420px;
+            position: relative;
+            box-sizing: border-box;
+            margin: 20px auto;
+            animation: fadeInCard 0.8s ease-out;
+        }
+
+        @keyframes fadeInCard {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Przycisk powrotu do ustawień nad zegarami */
+        .top-settings-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            color: #00d2ff;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            float: right;
+            margin-bottom: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .top-settings-btn:hover {
+            background: rgba(72, 49, 212, 0.3);
+            border-color: #ff00ff;
+            color: #ff00ff;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+
+        /* Przycisk MILCZAS po lewej stronie nagłówka */
+        .top-milczas-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(249, 109, 0, 0.3);
+            color: #f96d00;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            float: left;
+            margin-bottom: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .top-milczas-btn:hover {
+            background: rgba(249, 109, 0, 0.2);
+            border-color: #e94560;
+            color: #e94560;
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.3);
+        }
+
+        .header-container {
+            display: block;
+            width: 100%;
+            content: "";
+            clear: both;
+        }
+
+        /* Nagłówek karty */
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        /* GŁÓWNY LICZNIK DNI (Duże cyfry na górze) */
+        .main-days {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 5px;
+            color: #ffffff;
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .main-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #ff00ff;
+            margin-bottom: 20px;
+            display: block;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+        }
+
+        /* Sekcja dni roboczych netto */
+        .info-section {
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(72, 49, 212, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .info-section:hover {
+            transform: scale(1.02);
+        }
+
+        .sub-days {
+            font-size: 1.8rem;
+            color: #00d2ff;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 3px;
+        }
+
+        .sub-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #a29bfe;
+            display: block;
+            font-weight: bold;
+        }
+
+        /* Tytuł statystyk wyciągnięty na zewnątrz, aby zapobiec kolizji */
+        .stats-main-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #f96d00;
+            font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* Sekcja statystyk ze stałą wysokością i suwakiem/przewijaniem (Scrollbar) */
+        .stats-section {
+            background: rgba(5, 10, 24, 0.6);
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 210, 255, 0.15);
+            text-align: left;
+            height: 150px; 
+            overflow-y: auto; 
+            box-sizing: border-box;
+        }
+
+        /* Stylizacja paska przewijania wewnątrz okna statystyk */
+        .stats-section::-webkit-scrollbar {
+            width: 6px;
+        }
+        .stats-section::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .stats-section::-webkit-scrollbar-thumb {
+            background: rgba(0, 210, 255, 0.3);
+            border-radius: 10px;
+        }
+        .stats-section::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 0, 255, 0.5);
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            padding: 4px 5px;
+            border-radius: 8px;
+        }
+        .stat-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .stat-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-row:hover .stat-icon {
+            transform: scale(1.2) rotate(-5deg);
+        }
+
+        .stat-icon {
+            font-size: 1.2rem;
+            margin-right: 10px;
+            min-width: 24px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #00d2ff;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        /* Kontener na trzy okrągłe liczniki czasu rzeczywistego */
+        .circles-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        /* Box dopasowany gabarytowo do większych, bezpiecznych okręgów SVG */
+        .circle-box {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Pełnowymiarowe SVG z wyłączonym obcinaniem (overflow: visible) */
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotate(-90deg);
+            width: 90px;
+            height: 90px;
+            overflow: visible;
+        }
+
+        circle {
+            fill: none;
+            stroke-linecap: round;
+        }
+
+        /* Matowy, bardzo ciemny okrąg bazowy w tle */
+        .bg-circle { 
+            stroke: rgba(255, 255, 255, 0.05); 
+            stroke-width: 4;
+        }
+        
+        /* Wszystkie aktywne paski postępu posiadają identyczną bazę dasharray opartą o promień r=34 */
+        .progress-glow-back, .progress-glow-mid, .progress-main {
+            stroke-dasharray: 213.6; /* 2 * PI * 34 */
+            stroke-dashoffset: 213.6;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+
+        /* --- KONFIGURACJA SPRZĘTOWEGO NEONU FIOLETOWEGO (Godziny i Minuty) --- */
+        .purple-glow .progress-glow-back {
+            stroke: #4831d4;
+            stroke-width: 12;
+            opacity: 0.2;
+        }
+        .purple-glow .progress-glow-mid {
+            stroke: #6c5ce7;
+            stroke-width: 6;
+            opacity: 0.5;
+        }
+        .purple-glow .progress-main {
+            stroke: #a29bfe;
+            stroke-width: 3;
+        }
+
+        /* --- KONFIGURACJA SPRZĘTOWEGO NEONU POMARAŃCZOWEGO (Sekundy) --- */
+        .orange-glow .progress-glow-back {
+            stroke: #f96d00;
+            stroke-width: 14;
+            opacity: 0.25;
+        }
+        .orange-glow .progress-glow-mid {
+            stroke: #ff851b;
+            stroke-width: 7;
+            opacity: 0.6;
+        }
+        .orange-glow .progress-main {
+            stroke: #fff3e0;
+            stroke-width: 3;
+        }
+
+        .circle-number { 
+            font-size: 1.3rem; 
+            font-weight: bold; 
+            color: #ffffff;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .circle-unit { 
+            font-size: 0.55rem; 
+            text-transform: uppercase; 
+            opacity: 0.7; 
+            z-index: 1;
+            margin-top: 1px;
+        }
+
+        /* Dolna sekcja z datą zakończenia */
+        .footer-date {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .target-date-title {
+            font-size: 0.75rem; 
+            opacity: 0.6;
+            margin-bottom: 3px;
+        }
+
+        .target-date-text {
+            color: #f96d00;
+            font-size: 1.05rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(249, 109, 0, 0.2);
+        }
+
+        /* Przycisk konfiguracji pod spodem */
+        .settings-trigger-text {
+            color: #00d2ff;
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-block;
+            font-weight: bold;
+            transition: color 0.2s ease;
+        }
+        .settings-trigger-text:hover { color: #ff00ff; }
+
+        /* MODUŁ KROKOWYCH OKIEN USTAWIEŃ */
+        #settings-panel {
+            display: none;
+            background: #1a1a2e;
+            padding: 20px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #4831d4;
+            text-align: center;
+            animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .step-window {
+            display: none;
+        }
+        .step-window.active {
+            display: block;
+        }
+
+        .step-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #a29bfe;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Kontener suwaków i procentów */
+        .transport-container {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+            width: 90%;
+            margin: 0 auto 20px auto;
+            background: #0f3460;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #4831d4;
+            box-sizing: border-box;
+        }
+
+        .transport-row {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            text-align: left;
+            gap: 5px;
+        }
+
+        .transport-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .transport-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .transport-input-group input[type="range"] {
+            flex: 1;
+            accent-color: #00d2ff;
+            height: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .pct-display {
+            font-weight: bold;
+            color: #00d2ff;
+            min-width: 45px;
+            text-align: right;
+        }
+
+        .sum-validator {
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 5px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .sum-ok { color: #00ffcc; }
+        .sum-err { color: #ff4d4d; }
+
+        input[type="date"], input[type="number"] {
+            background: #0f3460;
+            border: 1px solid #4831d4;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            width: 90%;
+            font-size: 1.05rem;
+            box-sizing: border-box;
+            text-align: center;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input[type="date"]:focus, input[type="number"]:focus {
+            border-color: #00d2ff;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+        }
+
+        .nav-btn {
+            background: #4831d4;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin: 5px;
+            transition: background 0.2s;
+        }
+        .nav-btn:hover { background: #5a42f5; }
+
+        .back-btn { background: #30475e; }
+        .back-btn:hover { background: #47607a; }
+
+        .clear-btn { background: #e94560; }
+        .clear-btn:hover { background: #ff2a4b; }
+
+        .finish-message {
+            color: #00d2ff;
             padding: 20px;
-            word-break: break-word;
+            font-size: 1.8rem;
+            font-weight: bold;
+            animation: pulseFinish 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseFinish {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); text-shadow: 0 0 20px #00d2ff; }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
 
-    <div id="kontener"></div>
+    <script src="cordova.js"></script>
 
-    <script>
-        const kontener = document.getElementById('kontener');
+<div class="retirement-card">
+    
+    <div id="settings-panel">
         
-        function dodajTekst() {
-            kontener.appendChild(document.createTextNode('Jebac PIS'));
-            // setInterval wywoła funkcję ponownie po 0 milisekundach, tworząc nieskończoną pętlę
-            setTimeout(dodajTekst, 0);
+        <div class="step-window active" id="step-1">
+            <div class="step-title">Krok 1: Ustaw datę wieku emerytalnego</div>
+            <input type="date" id="date-input" onkeydown="if(event.key==='Enter'){saveStepData(1); nextStep(2).focus();}">
+            <div>
+                <button class="nav-btn" onclick="saveStepData(1); nextStep(2)">DALEJ ➔</button>
+            </div>
+        </div>
+
+        <div class="step-window" id="step-2">
+            <div class="step-title">Krok 2: Określ podział procentowy (Suma musi wynosić 100%)</div>
+            <div class="transport-container">
+                <div class="transport-row">
+                    <div class="transport-label"><span>🚗 Samochód</span><span class="pct-display" id="val-car">0%</span></div>
+                    <div class="transport-input-group">
+                        <input type="range" id="pct-car" min="0" max="100" value="0" oninput="updatePctOutputs()">
+                    </div>
+                </div>
+                <div class="transport-row">
+                    <div class="transport-label"><span>🚌 Autobus</span><span class="pct-display" id="val-bus">0%</span></div>
+                    <div class="transport-input-group">
+                        <input type="range" id="pct-bus" min="0" max="100" value="0" oninput="updatePctOutputs()">
+                    </div>
+                </div>
+                <div class="transport-row">
+                    <div class="transport-label"><span>🚲 Rower</span><span class="pct-display" id="val-bike">0%</span></div>
+                    <div class="transport-input-group">
+                        <input type="range" id="pct-bike" min="0" max="100" value="0" oninput="updatePctOutputs()">
+                    </div>
+                </div>
+                <div class="transport-row">
+                    <div class="transport-label"><span>🚶 Piechota</span><span class="pct-display" id="val-walk">0%</span></div>
+                    <div class="transport-input-group">
+                        <input type="range" id="pct-walk" min="0" max="100" value="0" oninput="updatePctOutputs()">
+                    </div>
+                </div>
+                <div class="sum-validator" id="sum-status">Suma: 0%</div>
+            </div>
+            <div>
+                <button class="nav-btn back-btn" onclick="nextStep(1)">⬅ WSTECZ</button>
+                <button class="nav-btn" onclick="saveStepData(2); handleTransportRouting();">DALEJ ➔</button>
+            </div>
+        </div>
+
+        <div class="step-window" id="step-3">
+            <div class="step-title" id="km-title">Krok 3: Ile masz km do pracy (w jedną stronę)?</div>
+            <input type="number" id="km-input" step="0.1" placeholder="Wpisz kilometry (np. 15)" onkeydown="if(event.key==='Enter'){saveStepData(3); nextStep(4).focus();}">
+            <div>
+                <button class="nav-btn back-btn" onclick="nextStep(2)">⬅ WSTECZ</button>
+                <button class="nav-btn" onclick="saveStepData(3); nextStep(4)">DALEJ ➔</button>
+            </div>
+        </div>
+
+        <div class="step-window" id="step-4">
+            <div class="step-title">Krok 4: Ile minut zajmuje dojazd/dojście (w jedną stronę)?</div>
+            <input type="number" id="time-input" step="1" placeholder="Czas w minutach (np. 25)" onkeydown="if(event.key==='Enter'){saveStepData(4); handleTimeRouting();}">
+            <div>
+                <button class="nav-btn back-btn" onclick="nextStep(3)">⬅ WSTECZ</button>
+                <button class="nav-btn" onclick="saveStepData(4); handleTimeRouting();">DALEJ ➔</button>
+            </div>
+        </div>
+
+        <div class="step-window" id="step-5">
+            <div class="step-title">Krok 5: Ile Twój samochód spala na 100km?</div>
+            <input type="number" id="burn-input" step="0.1" placeholder="Średnie spalanie w litrach (np. 6.5)" onkeydown="if(event.key==='Enter'){saveStepData(5); nextStep(6).focus();}">
+            <div>
+                <button class="nav-btn back-btn" onclick="nextStep(4)">⬅ WSTECZ</button>
+                <button class="nav-btn" onclick="saveStepData(5); nextStep(6)">DALEJ ➔</button>
+            </div>
+        </div>
+
+        <div class="step-window" id="step-6">
+            <div class="step-title">Krok 6: Ile kosztuje litr paliwa/benzyny?</div>
+            <input type="number" id="price-input" step="0.01" placeholder="Aktualna cena za litr w zł (np. 6.75)" onkeydown="if(event.key==='Enter'){saveStepData(6); handlePriceRouting();}">
+            <div>
+                <button class="nav-btn back-btn" onclick="nextStep(5)">⬅ WSTECZ</button>
+                <button class="nav-btn" onclick="saveStepData(6); handlePriceRouting();">DALEJ ➔</button>
+            </div>
+        </div>
+
+        <div class="step-window" id="step-7">
+            <div class="step-title">Krok 7: Ile średnio kosztuje jeden bilet autobusowy (zł)?</div>
+            <input type="number" id="bus-price-input" step="0.01" placeholder="Cena za 1 bilet w zł (np. 4.20)" onkeydown="if(event.key==='Enter'){saveStepData(7); nextStep(8).focus();}">
+            <div>
+                <button class="nav-btn back-btn" onclick="handleBusBack();">⬅ WSTECZ</button>
+                <button class="nav-btn" onclick="saveStepData(7); nextStep(8)">DALEJ ➔</button>
+            </div>
+        </div>
+
+        <div class="step-window" id="step-8">
+            <div class="step-title">Krok 8: Ile kaw w pracy pijesz dziennie?</div>
+            <input type="number" id="coffee-input" step="1" placeholder="Liczba kaw (np. 2)" onkeydown="if(event.key==='Enter'){saveStepData(8); confirmAndRun();}">
+            <div>
+                <button class="nav-btn back-btn" onclick="handleCoffeeBack();">⬅ WSTECZ</button>
+                <button class="nav-btn" onclick="saveStepData(8); confirmAndRun()">ZAPISZ I URUCHOM</button>
+                <button class="nav-btn clear-btn" onclick="clearData()" style="margin-top: 10px; display: block; width: 100%; box-sizing: border-box;">WYCZYŚĆ WSZYSTKO</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="dynamic-content">
+        <div class="header-container">
+            <button class="top-milczas-btn" onclick="closeApplication()">MILCZAS</button>
+            <button class="top-settings-btn" onclick="toggleSettings()">⚙️ Zmień ustawienia</button>
+            <div class="card-title">Planowanie Wolności</div>
+        </div>
+        
+        <div class="main-days" id="days-total">0</div>
+        <span class="main-label">Dni kalendarzowych</span>
+
+        <div class="info-section">
+            <div class="sub-days" id="days-work">0</div>
+            <span class="sub-label">Dni roboczych (minus 26 dni urlopu/rok i święta)</span>
+        </div>
+
+        <div class="stats-main-title">Przewidywane statystyki pracy</div>
+        <div class="stats-section" id="stats-area">
+            </div>
+
+        <div class="circles-container">
+            <div class="circle-box purple-glow">
+                <svg>
+                    <circle class="bg-circle" cx="45" cy="45" r="34"></circle>
+                    <circle class="progress-glow-back" id="h-pc-back" cx="45" cy="45" r="34"></circle>
+                    <circle class="progress-glow-mid" id="h-pc-mid" cx="45" cy="45" r="34"></circle>
+                    <circle class="progress-main" id="h-pc" cx="45" cy="45" r="34"></circle>
+                </svg>
+                <span class="circle-number" id="h-val">0</span><span class="circle-unit">Godz</span>
+            </div>
+            
+            <div class="circle-box purple-glow">
+                <svg>
+                    <circle class="bg-circle" cx="45" cy="45" r="34"></circle>
+                    <circle class="progress-glow-back" id="m-pc-back" cx="45" cy="45" r="34"></circle>
+                    <circle class="progress-glow-mid" id="m-pc-mid" cx="45" cy="45" r="34"></circle>
+                    <circle class="progress-main" id="m-pc" cx="45" cy="45" r="34"></circle>
+                </svg>
+                <span class="circle-number" id="m-val">0</span><span class="circle-unit">Min</span>
+            </div>
+            
+            <div class="circle-box orange-glow">
+                <svg>
+                    <circle class="bg-circle" cx="45" cy="45" r="34"></circle>
+                    <circle class="progress-glow-back" id="s-pc-back" cx="45" cy="45" r="34"></circle>
+                    <circle class="progress-glow-mid" id="s-pc-mid" cx="45" cy="45" r="34"></circle>
+                    <circle class="progress-main" id="s-pc" cx="45" cy="45" r="34"></circle>
+                </svg>
+                <span class="circle-number" id="s-val">0</span><span class="circle-unit">Sek</span>
+            </div>
+        </div>
+
+        <div class="footer-date">
+            <div class="target-date-title">Data uzyskania uprawnień:</div>
+            <div class="target-date-text" id="end-date-display">NIEUSTAWIONA</div>
+        </div>
+    </div>
+
+    <button class="settings-trigger-text" onclick="toggleSettings()">USTAW datę ukończenia wieku emerytalnego</button>
+</div>
+
+<script>
+    let finalDate = null;
+    let configData = { 
+        km: 0, 
+        time: 0, 
+        burn: 0, 
+        price: 0, 
+        busPrice: 0, 
+        coffee: 0,
+        pctCar: 0,
+        pctBus: 0,
+        pctBike: 0,
+        pctWalk: 0
+    };
+    const URLOP_ROCZNIE = 26;
+    const HOLIDAYS = ["01-01", "06-01", "01-05", "03-05", "15-08", "01-11", "11-11", "25-12", "26-12"];
+
+    const defaultTemplate = document.getElementById("dynamic-content").innerHTML;
+
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+        console.log("Cordova gotowa.");
+    }
+
+    function closeApplication() {
+        if (navigator && navigator.app && typeof navigator.app.exitApp === "function") {
+            navigator.app.exitApp();
+        } else if (navigator && navigator.device && typeof navigator.device.exitApp === "function") {
+            navigator.device.exitApp();
+        } else {
+            window.close();
+        }
+    }
+
+    function getEasterDate(year) {
+        const a = year % 19;
+        const b = Math.floor(year / 100);
+        const c = year % 100;
+        const d = Math.floor(b / 4);
+        const e = b % 4;
+        const f = Math.floor((b + 8) / 25);
+        const g = Math.floor((b - f + 1) / 3);
+        const h = (19 * a + b - d - g + 15) % 30;
+        const i = Math.floor(c / 4);
+        const k = c % 4;
+        const l = (32 + 2 * e + 2 * i - h - k) % 7;
+        const m = Math.floor((a + 11 * h + 22 * l) / 451);
+        const month = Math.floor((h + l - 7 * m + 114) / 31);
+        const day = ((h + l - 7 * m + 114) % 31) + 1;
+        return new Date(year, month - 1, day);
+    }
+
+    function getMovingHolidays(year) {
+        const easter = getEasterDate(year);
+        const easterMonday = new Date(easter);
+        easterMonday.setDate(easter.getDate() + 1);
+        const corpusChristi = new Date(easter);
+        corpusChristi.setDate(easter.getDate() + 60);
+        return [
+            String(easterMonday.getMonth() + 1).padStart(2, '0') + "-" + String(easterMonday.getDate()).padStart(2, '0'),
+            String(corpusChristi.getMonth() + 1).padStart(2, '0') + "-" + String(corpusChristi.getDate()).padStart(2, '0')
+        ];
+    }
+
+    function nextStep(stepNumber) {
+        const windows = document.querySelectorAll('.step-window');
+        windows.forEach(win => win.classList.remove('active'));
+        
+        const targetWin = document.getElementById(`step-${stepNumber}`);
+        if(targetWin) {
+            targetWin.classList.add('active');
+            const input = targetWin.querySelector('input');
+            if(input && targetWin.id !== 'step-2') input.focus();
+        }
+        return targetWin;
+    }
+
+    function updatePctOutputs() {
+        const c = parseInt(document.getElementById('pct-car').value) || 0;
+        const b = parseInt(document.getElementById('pct-bus').value) || 0;
+        const bk = parseInt(document.getElementById('pct-bike').value) || 0;
+        const w = parseInt(document.getElementById('pct-walk').value) || 0;
+
+        document.getElementById('val-car').innerText = c + "%";
+        document.getElementById('val-bus').innerText = b + "%";
+        document.getElementById('val-bike').innerText = bk + "%";
+        document.getElementById('val-walk').innerText = w + "%";
+
+        const total = c + b + bk + w;
+        const statusEl = document.getElementById('sum-status');
+        statusEl.innerText = "Suma: " + total + "% (Wymagane: 100%)";
+        
+        if(total === 100) {
+            statusEl.className = "sum-validator sum-ok";
+        } else {
+            statusEl.className = "sum-validator sum-err";
+        }
+    }
+
+    function handleTransportRouting() {
+        configData.pctCar = parseInt(document.getElementById('pct-car').value) || 0;
+        configData.pctBus = parseInt(document.getElementById('pct-bus').value) || 0;
+        configData.pctBike = parseInt(document.getElementById('pct-bike').value) || 0;
+        configData.pctWalk = parseInt(document.getElementById('pct-walk').value) || 0;
+
+        const total = configData.pctCar + configData.pctBus + configData.pctBike + configData.pctWalk;
+        if (total !== 100) {
+            alert("Błąd: Suma procentów musi wynosić dokładnie 100%! Obecnie wynosi: " + total + "%");
+            return;
+        }
+        nextStep(3);
+    }
+
+    function handleTimeRouting() {
+        if (configData.pctCar > 0) {
+            nextStep(5);
+        } else if (configData.pctBus > 0) {
+            nextStep(7);
+        } else {
+            nextStep(8);
+        }
+    }
+
+    function handlePriceRouting() {
+        if (configData.pctBus > 0) {
+            nextStep(7);
+        } else {
+            nextStep(8);
+        }
+    }
+
+    function handleBusBack() {
+        if (configData.pctCar > 0) {
+            nextStep(6);
+        } else {
+            nextStep(4);
+        }
+    }
+
+    function handleCoffeeBack() {
+        if (configData.pctBus > 0) {
+            nextStep(7);
+        } else if (configData.pctCar > 0) {
+            nextStep(6);
+        } else {
+            nextStep(4);
+        }
+    }
+
+    function saveStepData(step) {
+        if (step === 1) {
+            const val = document.getElementById('date-input').value;
+            if(val) localStorage.setItem('retirementDate', val);
+        } else if (step === 2) {
+            configData.pctCar = parseInt(document.getElementById('pct-car').value) || 0;
+            configData.pctBus = parseInt(document.getElementById('pct-bus').value) || 0;
+            configData.pctBike = parseInt(document.getElementById('pct-bike').value) || 0;
+            configData.pctWalk = parseInt(document.getElementById('pct-walk').value) || 0;
+        } else if (step === 3) {
+            configData.km = parseFloat(document.getElementById('km-input').value) || 0;
+        } else if (step === 4) {
+            configData.time = parseFloat(document.getElementById('time-input').value) || 0;
+        } else if (step === 5) {
+            configData.burn = parseFloat(document.getElementById('burn-input').value) || 0;
+        } else if (step === 6) {
+            configData.price = parseFloat(document.getElementById('price-input').value) || 0;
+        } else if (step === 7) {
+            configData.busPrice = parseFloat(document.getElementById('bus-price-input').value) || 0;
+        } else if (step === 8) {
+            configData.coffee = parseInt(document.getElementById('coffee-input').value) || 0;
+        }
+        if (step > 1) {
+            localStorage.setItem('retirementConfig', JSON.stringify(configData));
+        }
+    }
+
+    function toggleSettings() {
+        const panel = document.getElementById('settings-panel');
+        panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        if (panel.style.display === 'block') {
+            loadSavedData();
+            nextStep(1);
+            updatePctOutputs();
+            panel.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function confirmAndRun() {
+        const savedDate = localStorage.getItem('retirementDate');
+        if(!savedDate) {
+            alert("Błąd: Ustaw poprawnie datę w Kroku 1!");
+            nextStep(1);
+            return;
+        }
+        
+        finalDate = new Date(savedDate + "T00:00:00");
+        toggleSettings();
+        
+        document.getElementById("dynamic-content").innerHTML = defaultTemplate;
+        update(true);
+    }
+
+    function clearData() {
+        localStorage.removeItem('retirementDate');
+        localStorage.removeItem('retirementConfig');
+        
+        document.getElementById('date-input').value = "";
+        document.getElementById('pct-car').value = 0;
+        document.getElementById('pct-bus').value = 0;
+        document.getElementById('pct-bike').value = 0;
+        document.getElementById('pct-walk').value = 0;
+        document.getElementById('km-input').value = "";
+        document.getElementById('time-input').value = "";
+        document.getElementById('burn-input').value = "";
+        document.getElementById('price-input').value = "";
+        document.getElementById('bus-price-input').value = "";
+        document.getElementById('coffee-input').value = "";
+        
+        finalDate = null;
+        configData = { 
+            km: 0, time: 0, burn: 0, price: 0, busPrice: 0, coffee: 0,
+            pctCar: 0, pctBus: 0, pctBike: 0, pctWalk: 0
+        };
+        toggleSettings();
+        
+        document.getElementById("dynamic-content").innerHTML = defaultTemplate;
+        update();
+    }
+
+    function loadSavedData() {
+        const savedDate = localStorage.getItem('retirementDate');
+        const savedConfig = localStorage.getItem('retirementConfig');
+        
+        if(savedDate) {
+            finalDate = new Date(savedDate + "T00:00:00");
+            document.getElementById('date-input').value = savedDate;
+        }
+        
+        if(savedConfig) {
+            configData = JSON.parse(savedConfig);
+            document.getElementById('pct-car').value = configData.pctCar || 0;
+            document.getElementById('pct-bus').value = configData.pctBus || 0;
+            document.getElementById('pct-bike').value = configData.pctBike || 0;
+            document.getElementById('pct-walk').value = configData.pctWalk || 0;
+            document.getElementById('km-input').value = configData.km || "";
+            document.getElementById('time-input').value = configData.time || "";
+            document.getElementById('burn-input').value = configData.burn || "";
+            document.getElementById('price-input').value = configData.price || "";
+            document.getElementById('bus-price-input').value = configData.busPrice || "";
+            document.getElementById('coffee-input').value = configData.coffee || "";
+        }
+    }
+
+    function isHoliday(date) {
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        const dateStr = `${m}-${d}`;
+        
+        if (HOLIDAYS.includes(dateStr)) return true;
+        
+        const movingHolidays = getMovingHolidays(date.getFullYear());
+        return movingHolidays.includes(dateStr);
+    }
+
+    function calculateNetDays(start, end) {
+        let count = 0;
+        let cur = new Date(start);
+        cur.setHours(0,0,0,0);
+        
+        while (cur < end) {
+            const dayOfWeek = cur.getDay();
+            if (dayOfWeek !== 0 && dayOfWeek !== 6 && !isHoliday(cur)) {
+                count++;
+            }
+            cur.setDate(cur.getDate() + 1);
+        }
+        
+        const yearsLeft = (end - start) / (1000 * 60 * 60 * 24 * 365.25);
+        const net = count - Math.floor(yearsLeft * URLOP_ROCZNIE);
+        return net > 0 ? net : 0;
+    }
+
+    function setTripleCircle(baseId, percent) {
+        const circumference = 2 * Math.PI * 34; // 213.6
+        const offset = circumference - (percent / 100 * circumference);
+        
+        const mainCircle = document.getElementById(baseId);
+        const midCircle = document.getElementById(baseId + "-mid");
+        const backCircle = document.getElementById(baseId + "-back");
+        
+        if (mainCircle) mainCircle.style.strokeDashoffset = offset;
+        if (midCircle) midCircle.style.strokeDashoffset = offset;
+        if (backCircle) backCircle.style.strokeDashoffset = offset;
+    }
+
+    function animateValue(obj, start, end, duration) {
+        if (!obj) return;
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('pl-PL');
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            } else {
+                obj.innerHTML = end.toLocaleString('pl-PL');
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    function update(isFirstRun = false) {
+        const savedDateCheck = localStorage.getItem('retirementDate');
+        
+        if (!savedDateCheck || !finalDate || isNaN(finalDate.getTime())) {
+            const totalEl = document.getElementById("days-total");
+            if(totalEl) {
+                document.getElementById("days-total").innerText = "0";
+                document.getElementById("days-work").innerText = "0";
+                document.getElementById("h-val").innerText = "0";
+                document.getElementById("m-val").innerText = "0";
+                document.getElementById("s-val").innerText = "0";
+                setTripleCircle("h-pc", 0);
+                setTripleCircle("m-pc", 0);
+                setTripleCircle("s-pc", 0);
+                document.getElementById("end-date-display").innerText = "KLIKNIJ NAPIS PONIŻEJ I SKONFIGURUJ LICZNIK";
+            }
+            return;
         }
 
-        // Uruchomienie generowania tekstu po załadowaniu strony
-        dodajTekst();
-    </script>
+        const now = new Date();
+        const diff = finalDate - now;
+
+        if (diff <= 0) {
+            document.getElementById("dynamic-content").innerHTML = "<div class='finish-message'>CZAS NA ZASŁUŻONĄ WOLNOŚĆ! 🥂</div>";
+            return;
+        }
+
+        if (!document.getElementById("days-total")) return;
+
+        const dTotal = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        const netDays = calculateNetDays(now, finalDate);
+
+        if (isFirstRun) {
+            animateValue(document.getElementById("days-total"), 0, dTotal, 1000);
+            animateValue(document.getElementById("days-work"), 0, netDays, 1000);
+        } else {
+            document.getElementById("days-total").innerText = dTotal.toLocaleString('pl-PL');
+            document.getElementById("days-work").innerText = netDays.toLocaleString('pl-PL');
+        }
+
+        document.getElementById("h-val").innerText = h;
+        document.getElementById("m-val").innerText = m;
+        document.getElementById("s-val").innerText = s;
+
+        setTripleCircle("h-pc", (h / 24) * 100);
+        setTripleCircle("m-pc", (m / 60) * 100);
+        setTripleCircle("s-pc", (s / 60) * 100);
+
+        // ROZBICIE DNI NA BAZIE PROCENTÓW
+        const daysCar = netDays * (configData.pctCar / 100);
+        const daysBus = netDays * (configData.pctBus / 100);
+        const daysBike = netDays * (configData.pctBike / 100);
+        const daysWalk = netDays * (configData.pctWalk / 100);
+
+        // Obliczenia dystansów i czasów dla poszczególnych trybów
+        const kmCar = daysCar * (configData.km * 2);
+        const kmBus = daysBus * (configData.km * 2);
+        const kmBike = daysBike * (configData.km * 2);
+        const kmWalk = daysWalk * (configData.km * 2);
+        const totalKmTotal = kmCar + kmBus + kmBike + kmWalk;
+
+        const minCar = daysCar * (configData.time * 2);
+        const minBus = daysBus * (configData.time * 2);
+        const minBike = daysBike * (configData.time * 2);
+        const minWalk = daysWalk * (configData.time * 2);
+        const totalHoursTotal = Math.round((minCar + minBus + minBike + minWalk) / 60);
+        const totalDaysFromHours = Math.round(totalHoursTotal / 24);
+
+        // Koszty finansowe
+        const totalLiters = (kmCar * configData.burn) / 100;
+        const totalCarCost = totalLiters * configData.price;
+        const totalBusCost = daysBus * 2 * configData.busPrice;
+        const totalCostSum = totalCarCost + totalBusCost;
+
+        // Inne statystyki
+        const totalCoffee = netDays * configData.coffee;
+        const totalCoffeeLiters = Math.round(totalCoffee * 0.25);
+        const totalSteps = Math.round(kmWalk * 1300);
+
+        // GENEROWANIE NIEZALEŻNYCH, PRZEWIJANYCH WIERSZY STATYSTYK
+        const statsArea = document.getElementById("stats-area");
+        let htmlRows = "";
+
+        // 1. Wiersze globalne: Łączny dystans i czas (godziny + dni w nawiasie)
+        htmlRows += `
+            <div class="stat-row">
+                <span class="stat-icon">🗺️</span>
+                <span>Łączny dystans drogi:</span>
+                <span class="stat-value">${Math.round(totalKmTotal).toLocaleString('pl-PL')} km</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-icon">⏱️</span>
+                <span>Czas spędzony w drodze:</span>
+                <span class="stat-value">${totalHoursTotal.toLocaleString('pl-PL')} godz. (~${totalDaysFromHours} dni)</span>
+            </div>`;
+
+        // 2. Sekcja: Samochód
+        if (configData.pctCar > 0) {
+            htmlRows += `
+                <div class="stat-row">
+                    <span class="stat-icon">🚗</span>
+                    <span>Dystans autem (${configData.pctCar}%):</span>
+                    <span class="stat-value">${Math.round(kmCar).toLocaleString('pl-PL')} km</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-icon">⛽</span>
+                    <span>Spalone paliwo:</span>
+                    <span class="stat-value">${Math.round(totalLiters).toLocaleString('pl-PL')} l</span>
+                </div>`;
+        }
+
+        // 3. Sekcja: Autobus
+        if (configData.pctBus > 0) {
+            htmlRows += `
+                <div class="stat-row">
+                    <span class="stat-icon">🚌</span>
+                    <span>Dystans autobusem (${configData.pctBus}%):</span>
+                    <span class="stat-value">${Math.round(kmBus).toLocaleString('pl-PL')} km</span>
+                </div>`;
+        }
+
+        // 4. Sekcja: Rower
+        if (configData.pctBike > 0) {
+            htmlRows += `
+                <div class="stat-row">
+                    <span class="stat-icon">🚲</span>
+                    <span>Dystans rowerem (${configData.pctBike}%):</span>
+                    <span class="stat-value">${Math.round(kmBike).toLocaleString('pl-PL')} km</span>
+                </div>`;
+        }
+
+        // 5. Sekcja: Piechota
+        if (configData.pctWalk > 0) {
+            htmlRows += `
+                <div class="stat-row">
+                    <span class="stat-icon">🚶</span>
+                    <span>Dystans pieszo (${configData.pctWalk}%):</span>
+                    <span class="stat-value">${Math.round(kmWalk).toLocaleString('pl-PL')} km</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-icon">👣</span>
+                    <span>Kroki do przejścia:</span>
+                    <span class="stat-value">${totalSteps.toLocaleString('pl-PL')} szt.</span>
+                </div>`;
+        }
+
+        // 6. Podsumowanie finansów i kawy (zawsze na dole listy)
+        htmlRows += `
+            <div class="stat-row">
+                <span class="stat-icon">💰</span>
+                <span>Koszt transportu razem:</span>
+                <span class="stat-value">${totalCostSum.toFixed(2).toLocaleString('pl-PL')} zł</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-icon">☕</span>
+                <span>Kawa do wypicia:</span>
+                <span class="stat-value">${totalCoffee.toLocaleString('pl-PL')} szt. (~${totalCoffeeLiters} l)</span>
+            </div>`;
+
+        statsArea.innerHTML = htmlRows;
+
+        const opt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById("end-date-display").innerText = finalDate.toLocaleDateString('pl-PL', opt);
+    }
+
+    loadSavedData();
+    setInterval(() => update(false), 1000);
+    update(true);
+</script>
 
 </body>
 </html>
