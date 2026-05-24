@@ -522,6 +522,8 @@
 </head>
 <body>
 
+    <script src="cordova.js"></script>
+
 <div class="retirement-card">
     
     <div id="settings-panel">
@@ -705,7 +707,6 @@
 
     const defaultTemplate = document.getElementById("dynamic-content").innerHTML;
 
-    // NOWOŚĆ: Rejestracja zdarzenia Cordova i obsługa zamykania aplikacji
     document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady() {
         console.log("Cordova gotowa.");
@@ -826,7 +827,6 @@
         }
     }
 
-    // NAPRAWA: Poprawiona ścieżka wstecz dla Kroku 8, aby nie pomijała biletów autobusowych
     function handleCoffeeBack() {
         if (configData.pctBus > 0) {
             nextStep(7);
