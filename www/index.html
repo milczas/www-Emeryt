@@ -628,7 +628,7 @@
 
     <div id="dynamic-content">
         <div class="header-container">
-            <button class="top-milczas-btn" onclick="if(navigator.app){navigator.app.exitApp();}else{window.close();}">MILCZAS</button>
+            <button class="top-milczas-btn" onclick="closeApplication()">MILCZAS</button>
             <button class="top-settings-btn" onclick="toggleSettings()">⚙️ Zmień ustawienia</button>
             <div class="card-title">Planowanie Wolności</div>
         </div>
@@ -704,6 +704,22 @@
     const HOLIDAYS = ["01-01", "06-01", "01-05", "03-05", "15-08", "01-11", "11-11", "25-12", "26-12"];
 
     const defaultTemplate = document.getElementById("dynamic-content").innerHTML;
+
+    // NOWOŚĆ: Rejestracja zdarzenia Cordova i obsługa zamykania aplikacji
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+        console.log("Cordova gotowa.");
+    }
+
+    function closeApplication() {
+        if (navigator && navigator.app && typeof navigator.app.exitApp === "function") {
+            navigator.app.exitApp();
+        } else if (navigator && navigator.device && typeof navigator.device.exitApp === "function") {
+            navigator.device.exitApp();
+        } else {
+            window.close();
+        }
+    }
 
     function getEasterDate(year) {
         const a = year % 19;
@@ -810,6 +826,7 @@
         }
     }
 
+    // NAPRAWA: Poprawiona ścieżka wstecz dla Kroku 8, aby nie pomijała biletów autobusowych
     function handleCoffeeBack() {
         if (configData.pctBus > 0) {
             nextStep(7);
@@ -1065,11 +1082,11 @@
         const totalCoffeeLiters = Math.round(totalCoffee * 0.25);
         const totalSteps = Math.round(kmWalk * 1300);
 
-        // DYNAMICZNE BUDOWANIE ELEMENTÓW LISTY PRZEWIJANEJ
+        // GENEROWANIE NIEZALEŻNYCH, PRZEWIJANYCH WIERSZY STATYSTYK
         const statsArea = document.getElementById("stats-area");
         let htmlRows = "";
 
-        // 1. Wiersze globalne: Łączny dystans i zaktualizowany czas (godziny + dni w nawiasie)
+        // 1. Wiersze globalne: Łączny dystans i czas (godziny + dni w nawiasie)
         htmlRows += `
             <div class="stat-row">
                 <span class="stat-icon">🗺️</span>
