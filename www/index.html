@@ -74,6 +74,27 @@
             box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
         }
 
+        /* Przycisk MILCZAS po lewej stronie nagłówka */
+        .top-milczas-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(249, 109, 0, 0.3);
+            color: #f96d00;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            float: left;
+            margin-bottom: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .top-milczas-btn:hover {
+            background: rgba(249, 109, 0, 0.2);
+            border-color: #e94560;
+            color: #e94560;
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.3);
+        }
+
         .header-container {
             display: block;
             width: 100%;
@@ -144,7 +165,17 @@
             font-weight: bold;
         }
 
-        /* Sekcja statystyk */
+        /* Tytuł statystyk wyciągnięty na zewnątrz, aby zapobiec kolizji */
+        .stats-main-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #f96d00;
+            font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* Sekcja statystyk ze stałą wysokością i suwakiem/przewijaniem (Scrollbar) */
         .stats-section {
             background: rgba(5, 10, 24, 0.6);
             border-radius: 20px;
@@ -152,16 +183,25 @@
             margin-bottom: 20px;
             border: 1px solid rgba(0, 210, 255, 0.15);
             text-align: left;
+            height: 150px; 
+            overflow-y: auto; 
+            box-sizing: border-box;
         }
 
-        .stats-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: #f96d00;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-align: center;
-            letter-spacing: 1px;
+        /* Stylizacja paska przewijania wewnątrz okna statystyk */
+        .stats-section::-webkit-scrollbar {
+            width: 6px;
+        }
+        .stats-section::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .stats-section::-webkit-scrollbar-thumb {
+            background: rgba(0, 210, 255, 0.3);
+            border-radius: 10px;
+        }
+        .stats-section::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 0, 255, 0.5);
         }
 
         .stat-row {
@@ -170,11 +210,11 @@
             margin-bottom: 10px;
             font-size: 0.9rem;
             transition: all 0.2s ease;
-            padding: 2px 5px;
+            padding: 4px 5px;
             border-radius: 8px;
         }
         .stat-row:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
         }
         .stat-row:last-child {
             margin-bottom: 0;
@@ -194,7 +234,7 @@
 
         .stat-value {
             font-weight: bold;
-            color: #ffffff;
+            color: #00d2ff;
             margin-left: auto;
             text-align: right;
         }
@@ -251,32 +291,32 @@
         .purple-glow .progress-glow-back {
             stroke: #4831d4;
             stroke-width: 12;
-            opacity: 0.2; /* Szeroka łuna światła pod spodem */
+            opacity: 0.2;
         }
         .purple-glow .progress-glow-mid {
             stroke: #6c5ce7;
             stroke-width: 6;
-            opacity: 0.5; /* Średnie wypełnienie światłem */
+            opacity: 0.5;
         }
         .purple-glow .progress-main {
             stroke: #a29bfe;
-            stroke-width: 3; /* Ostry, jasny rdzeń na wierzchu */
+            stroke-width: 3;
         }
 
         /* --- KONFIGURACJA SPRZĘTOWEGO NEONU POMARAŃCZOWEGO (Sekundy) --- */
         .orange-glow .progress-glow-back {
             stroke: #f96d00;
             stroke-width: 14;
-            opacity: 0.25; /* Mocna, bardzo szeroka poświata rzucana na ciemną kartę */
+            opacity: 0.25;
         }
         .orange-glow .progress-glow-mid {
             stroke: #ff851b;
             stroke-width: 7;
-            opacity: 0.6; /* Wewnętrzny blask płynnego przejścia tonalnego */
+            opacity: 0.6;
         }
         .orange-glow .progress-main {
             stroke: #fff3e0;
-            stroke-width: 3; /* Biało-pomarańczowy, jaskrawy pasek główny */
+            stroke-width: 3;
         }
 
         .circle-number { 
@@ -365,6 +405,67 @@
             letter-spacing: 0.5px;
         }
 
+        /* Kontener suwaków i procentów */
+        .transport-container {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+            width: 90%;
+            margin: 0 auto 20px auto;
+            background: #0f3460;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #4831d4;
+            box-sizing: border-box;
+        }
+
+        .transport-row {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            text-align: left;
+            gap: 5px;
+        }
+
+        .transport-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .transport-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .transport-input-group input[type="range"] {
+            flex: 1;
+            accent-color: #00d2ff;
+            height: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .pct-display {
+            font-weight: bold;
+            color: #00d2ff;
+            min-width: 45px;
+            text-align: right;
+        }
+
+        .sum-validator {
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 5px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .sum-ok { color: #00ffcc; }
+        .sum-err { color: #ff4d4d; }
+
         input[type="date"], input[type="number"] {
             background: #0f3460;
             border: 1px solid #4831d4;
@@ -434,17 +535,43 @@
         </div>
 
         <div class="step-window" id="step-2">
-            <div class="step-title">Krok 2: Ile masz km do pracy (w jedną stronę)?</div>
-            <input type="number" id="km-input" step="0.1" placeholder="Wpisz kilometry (np. 15)" onkeydown="if(event.key==='Enter'){saveStepData(2); nextStep(3).focus();}">
+            <div class="step-title">Krok 2: Określ podział procentowy (Suma musi wynosić 100%)</div>
+            <div class="transport-container">
+                <div class="transport-row">
+                    <div class="transport-label"><span>🚗 Samochód</span><span class="pct-display" id="val-car">0%</span></div>
+                    <div class="transport-input-group">
+                        <input type="range" id="pct-car" min="0" max="100" value="0" oninput="updatePctOutputs()">
+                    </div>
+                </div>
+                <div class="transport-row">
+                    <div class="transport-label"><span>🚌 Autobus</span><span class="pct-display" id="val-bus">0%</span></div>
+                    <div class="transport-input-group">
+                        <input type="range" id="pct-bus" min="0" max="100" value="0" oninput="updatePctOutputs()">
+                    </div>
+                </div>
+                <div class="transport-row">
+                    <div class="transport-label"><span>🚲 Rower</span><span class="pct-display" id="val-bike">0%</span></div>
+                    <div class="transport-input-group">
+                        <input type="range" id="pct-bike" min="0" max="100" value="0" oninput="updatePctOutputs()">
+                    </div>
+                </div>
+                <div class="transport-row">
+                    <div class="transport-label"><span>🚶 Piechota</span><span class="pct-display" id="val-walk">0%</span></div>
+                    <div class="transport-input-group">
+                        <input type="range" id="pct-walk" min="0" max="100" value="0" oninput="updatePctOutputs()">
+                    </div>
+                </div>
+                <div class="sum-validator" id="sum-status">Suma: 0%</div>
+            </div>
             <div>
                 <button class="nav-btn back-btn" onclick="nextStep(1)">⬅ WSTECZ</button>
-                <button class="nav-btn" onclick="saveStepData(2); nextStep(3)">DALEJ ➔</button>
+                <button class="nav-btn" onclick="saveStepData(2); handleTransportRouting();">DALEJ ➔</button>
             </div>
         </div>
 
         <div class="step-window" id="step-3">
-            <div class="step-title">Krok 3: Ile minut jedziesz do pracy (w jedną stronę)?</div>
-            <input type="number" id="time-input" step="1" placeholder="Czas w minutach (np. 25)" onkeydown="if(event.key==='Enter'){saveStepData(3); nextStep(4).focus();}">
+            <div class="step-title" id="km-title">Krok 3: Ile masz km do pracy (w jedną stronę)?</div>
+            <input type="number" id="km-input" step="0.1" placeholder="Wpisz kilometry (np. 15)" onkeydown="if(event.key==='Enter'){saveStepData(3); nextStep(4).focus();}">
             <div>
                 <button class="nav-btn back-btn" onclick="nextStep(2)">⬅ WSTECZ</button>
                 <button class="nav-btn" onclick="saveStepData(3); nextStep(4)">DALEJ ➔</button>
@@ -452,17 +579,17 @@
         </div>
 
         <div class="step-window" id="step-4">
-            <div class="step-title">Krok 4: Ile Twój samochód spala na 100km?</div>
-            <input type="number" id="burn-input" step="0.1" placeholder="Średnie spalanie w litrach (np. 6.5)" onkeydown="if(event.key==='Enter'){saveStepData(4); nextStep(5).focus();}">
+            <div class="step-title">Krok 4: Ile minut zajmuje dojazd/dojście (w jedną stronę)?</div>
+            <input type="number" id="time-input" step="1" placeholder="Czas w minutach (np. 25)" onkeydown="if(event.key==='Enter'){saveStepData(4); handleTimeRouting();}">
             <div>
                 <button class="nav-btn back-btn" onclick="nextStep(3)">⬅ WSTECZ</button>
-                <button class="nav-btn" onclick="saveStepData(4); nextStep(5)">DALEJ ➔</button>
+                <button class="nav-btn" onclick="saveStepData(4); handleTimeRouting();">DALEJ ➔</button>
             </div>
         </div>
 
         <div class="step-window" id="step-5">
-            <div class="step-title">Krok 5: Ile kosztuje litr paliwa/benzyny?</div>
-            <input type="number" id="price-input" step="0.01" placeholder="Aktualna cena za litr w zł (np. 6.75)" onkeydown="if(event.key==='Enter'){saveStepData(5); nextStep(6).focus();}">
+            <div class="step-title">Krok 5: Ile Twój samochód spala na 100km?</div>
+            <input type="number" id="burn-input" step="0.1" placeholder="Średnie spalanie w litrach (np. 6.5)" onkeydown="if(event.key==='Enter'){saveStepData(5); nextStep(6).focus();}">
             <div>
                 <button class="nav-btn back-btn" onclick="nextStep(4)">⬅ WSTECZ</button>
                 <button class="nav-btn" onclick="saveStepData(5); nextStep(6)">DALEJ ➔</button>
@@ -470,11 +597,29 @@
         </div>
 
         <div class="step-window" id="step-6">
-            <div class="step-title">Krok 6: Ile kaw w pracy pijesz dziennie?</div>
-            <input type="number" id="coffee-input" step="1" placeholder="Liczba kaw (np. 2)" onkeydown="if(event.key==='Enter'){saveStepData(6); confirmAndRun();}">
+            <div class="step-title">Krok 6: Ile kosztuje litr paliwa/benzyny?</div>
+            <input type="number" id="price-input" step="0.01" placeholder="Aktualna cena za litr w zł (np. 6.75)" onkeydown="if(event.key==='Enter'){saveStepData(6); handlePriceRouting();}">
             <div>
                 <button class="nav-btn back-btn" onclick="nextStep(5)">⬅ WSTECZ</button>
-                <button class="nav-btn" onclick="saveStepData(6); confirmAndRun()">ZAPISZ I URUCHOM</button>
+                <button class="nav-btn" onclick="saveStepData(6); handlePriceRouting();">DALEJ ➔</button>
+            </div>
+        </div>
+
+        <div class="step-window" id="step-7">
+            <div class="step-title">Krok 7: Ile średnio kosztuje jeden bilet autobusowy (zł)?</div>
+            <input type="number" id="bus-price-input" step="0.01" placeholder="Cena za 1 bilet w zł (np. 4.20)" onkeydown="if(event.key==='Enter'){saveStepData(7); nextStep(8).focus();}">
+            <div>
+                <button class="nav-btn back-btn" onclick="handleBusBack();">⬅ WSTECZ</button>
+                <button class="nav-btn" onclick="saveStepData(7); nextStep(8)">DALEJ ➔</button>
+            </div>
+        </div>
+
+        <div class="step-window" id="step-8">
+            <div class="step-title">Krok 8: Ile kaw w pracy pijesz dziennie?</div>
+            <input type="number" id="coffee-input" step="1" placeholder="Liczba kaw (np. 2)" onkeydown="if(event.key==='Enter'){saveStepData(8); confirmAndRun();}">
+            <div>
+                <button class="nav-btn back-btn" onclick="handleCoffeeBack();">⬅ WSTECZ</button>
+                <button class="nav-btn" onclick="saveStepData(8); confirmAndRun()">ZAPISZ I URUCHOM</button>
                 <button class="nav-btn clear-btn" onclick="clearData()" style="margin-top: 10px; display: block; width: 100%; box-sizing: border-box;">WYCZYŚĆ WSZYSTKO</button>
             </div>
         </div>
@@ -483,6 +628,7 @@
 
     <div id="dynamic-content">
         <div class="header-container">
+            <button class="top-milczas-btn" onclick="if(navigator.app){navigator.app.exitApp();}else{window.close();}">MILCZAS</button>
             <button class="top-settings-btn" onclick="toggleSettings()">⚙️ Zmień ustawienia</button>
             <div class="card-title">Planowanie Wolności</div>
         </div>
@@ -492,37 +638,12 @@
 
         <div class="info-section">
             <div class="sub-days" id="days-work">0</div>
-            <span class="sub-label">Dni roboczych (minus 26 dni urlopu/rok)</span>
+            <span class="sub-label">Dni roboczych (minus 26 dni urlopu/rok i święta)</span>
         </div>
 
-        <div class="stats-section">
-            <div class="stats-title">Przewidywane statystyki pracy</div>
-            <div class="stat-row">
-                <span class="stat-icon">🚗</span>
-                <span>Pozostały dystans:</span>
-                <span class="stat-value" id="stat-km">0 km</span>
+        <div class="stats-main-title">Przewidywane statystyki pracy</div>
+        <div class="stats-section" id="stats-area">
             </div>
-            <div class="stat-row">
-                <span class="stat-icon">⏱️</span>
-                <span>Czas spędzony w drodze:</span>
-                <span class="stat-value" id="stat-time">0 godz.</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-icon">⛽</span>
-                <span>Potrzebne paliwo:</span>
-                <span class="stat-value" id="stat-liters">0 l</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-icon">💰</span>
-                <span>Koszt paliwa dojazdów:</span>
-                <span class="stat-value" id="stat-cost">0.00 zł</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-icon">☕</span>
-                <span>Kawa do wypicia:</span>
-                <span class="stat-value" id="stat-coffee">0 szt. (~0 l)</span>
-            </div>
-        </div>
 
         <div class="circles-container">
             <div class="circle-box purple-glow">
@@ -567,7 +688,18 @@
 
 <script>
     let finalDate = null;
-    let configData = { km: 0, time: 0, burn: 0, price: 0, coffee: 0 };
+    let configData = { 
+        km: 0, 
+        time: 0, 
+        burn: 0, 
+        price: 0, 
+        busPrice: 0, 
+        coffee: 0,
+        pctCar: 0,
+        pctBus: 0,
+        pctBike: 0,
+        pctWalk: 0
+    };
     const URLOP_ROCZNIE = 26;
     const HOLIDAYS = ["01-01", "06-01", "01-05", "03-05", "15-08", "01-11", "11-11", "25-12", "26-12"];
 
@@ -611,9 +743,81 @@
         if(targetWin) {
             targetWin.classList.add('active');
             const input = targetWin.querySelector('input');
-            if(input) input.focus();
+            if(input && targetWin.id !== 'step-2') input.focus();
         }
         return targetWin;
+    }
+
+    function updatePctOutputs() {
+        const c = parseInt(document.getElementById('pct-car').value) || 0;
+        const b = parseInt(document.getElementById('pct-bus').value) || 0;
+        const bk = parseInt(document.getElementById('pct-bike').value) || 0;
+        const w = parseInt(document.getElementById('pct-walk').value) || 0;
+
+        document.getElementById('val-car').innerText = c + "%";
+        document.getElementById('val-bus').innerText = b + "%";
+        document.getElementById('val-bike').innerText = bk + "%";
+        document.getElementById('val-walk').innerText = w + "%";
+
+        const total = c + b + bk + w;
+        const statusEl = document.getElementById('sum-status');
+        statusEl.innerText = "Suma: " + total + "% (Wymagane: 100%)";
+        
+        if(total === 100) {
+            statusEl.className = "sum-validator sum-ok";
+        } else {
+            statusEl.className = "sum-validator sum-err";
+        }
+    }
+
+    function handleTransportRouting() {
+        configData.pctCar = parseInt(document.getElementById('pct-car').value) || 0;
+        configData.pctBus = parseInt(document.getElementById('pct-bus').value) || 0;
+        configData.pctBike = parseInt(document.getElementById('pct-bike').value) || 0;
+        configData.pctWalk = parseInt(document.getElementById('pct-walk').value) || 0;
+
+        const total = configData.pctCar + configData.pctBus + configData.pctBike + configData.pctWalk;
+        if (total !== 100) {
+            alert("Błąd: Suma procentów musi wynosić dokładnie 100%! Obecnie wynosi: " + total + "%");
+            return;
+        }
+        nextStep(3);
+    }
+
+    function handleTimeRouting() {
+        if (configData.pctCar > 0) {
+            nextStep(5);
+        } else if (configData.pctBus > 0) {
+            nextStep(7);
+        } else {
+            nextStep(8);
+        }
+    }
+
+    function handlePriceRouting() {
+        if (configData.pctBus > 0) {
+            nextStep(7);
+        } else {
+            nextStep(8);
+        }
+    }
+
+    function handleBusBack() {
+        if (configData.pctCar > 0) {
+            nextStep(6);
+        } else {
+            nextStep(4);
+        }
+    }
+
+    function handleCoffeeBack() {
+        if (configData.pctBus > 0) {
+            nextStep(7);
+        } else if (configData.pctCar > 0) {
+            nextStep(6);
+        } else {
+            nextStep(4);
+        }
     }
 
     function saveStepData(step) {
@@ -621,14 +825,21 @@
             const val = document.getElementById('date-input').value;
             if(val) localStorage.setItem('retirementDate', val);
         } else if (step === 2) {
-            configData.km = parseFloat(document.getElementById('km-input').value) || 0;
+            configData.pctCar = parseInt(document.getElementById('pct-car').value) || 0;
+            configData.pctBus = parseInt(document.getElementById('pct-bus').value) || 0;
+            configData.pctBike = parseInt(document.getElementById('pct-bike').value) || 0;
+            configData.pctWalk = parseInt(document.getElementById('pct-walk').value) || 0;
         } else if (step === 3) {
-            configData.time = parseFloat(document.getElementById('time-input').value) || 0;
+            configData.km = parseFloat(document.getElementById('km-input').value) || 0;
         } else if (step === 4) {
-            configData.burn = parseFloat(document.getElementById('burn-input').value) || 0;
+            configData.time = parseFloat(document.getElementById('time-input').value) || 0;
         } else if (step === 5) {
-            configData.price = parseFloat(document.getElementById('price-input').value) || 0;
+            configData.burn = parseFloat(document.getElementById('burn-input').value) || 0;
         } else if (step === 6) {
+            configData.price = parseFloat(document.getElementById('price-input').value) || 0;
+        } else if (step === 7) {
+            configData.busPrice = parseFloat(document.getElementById('bus-price-input').value) || 0;
+        } else if (step === 8) {
             configData.coffee = parseInt(document.getElementById('coffee-input').value) || 0;
         }
         if (step > 1) {
@@ -642,6 +853,7 @@
         if (panel.style.display === 'block') {
             loadSavedData();
             nextStep(1);
+            updatePctOutputs();
             panel.scrollIntoView({ behavior: 'smooth' });
         }
     }
@@ -666,14 +878,22 @@
         localStorage.removeItem('retirementConfig');
         
         document.getElementById('date-input').value = "";
+        document.getElementById('pct-car').value = 0;
+        document.getElementById('pct-bus').value = 0;
+        document.getElementById('pct-bike').value = 0;
+        document.getElementById('pct-walk').value = 0;
         document.getElementById('km-input').value = "";
         document.getElementById('time-input').value = "";
         document.getElementById('burn-input').value = "";
         document.getElementById('price-input').value = "";
+        document.getElementById('bus-price-input').value = "";
         document.getElementById('coffee-input').value = "";
         
         finalDate = null;
-        configData = { km: 0, time: 0, burn: 0, price: 0, coffee: 0 };
+        configData = { 
+            km: 0, time: 0, burn: 0, price: 0, busPrice: 0, coffee: 0,
+            pctCar: 0, pctBus: 0, pctBike: 0, pctWalk: 0
+        };
         toggleSettings();
         
         document.getElementById("dynamic-content").innerHTML = defaultTemplate;
@@ -691,10 +911,15 @@
         
         if(savedConfig) {
             configData = JSON.parse(savedConfig);
+            document.getElementById('pct-car').value = configData.pctCar || 0;
+            document.getElementById('pct-bus').value = configData.pctBus || 0;
+            document.getElementById('pct-bike').value = configData.pctBike || 0;
+            document.getElementById('pct-walk').value = configData.pctWalk || 0;
             document.getElementById('km-input').value = configData.km || "";
             document.getElementById('time-input').value = configData.time || "";
             document.getElementById('burn-input').value = configData.burn || "";
             document.getElementById('price-input').value = configData.price || "";
+            document.getElementById('bus-price-input').value = configData.busPrice || "";
             document.getElementById('coffee-input').value = configData.coffee || "";
         }
     }
@@ -728,7 +953,6 @@
         return net > 0 ? net : 0;
     }
 
-    // Zaktualizowana funkcja przypisująca offset dla TRZECH warstw SVG jednego licznika
     function setTripleCircle(baseId, percent) {
         const circumference = 2 * Math.PI * 34; // 213.6
         const offset = circumference - (percent / 100 * circumference);
@@ -766,11 +990,6 @@
             if(totalEl) {
                 document.getElementById("days-total").innerText = "0";
                 document.getElementById("days-work").innerText = "0";
-                document.getElementById("stat-km").innerText = "0 km";
-                document.getElementById("stat-time").innerText = "0 godz.";
-                document.getElementById("stat-liters").innerText = "0 l";
-                document.getElementById("stat-cost").innerText = "0.00 zł";
-                document.getElementById("stat-coffee").innerText = "0 szt. (~0 l)";
                 document.getElementById("h-val").innerText = "0";
                 document.getElementById("m-val").innerText = "0";
                 document.getElementById("s-val").innerText = "0";
@@ -799,14 +1018,6 @@
 
         const netDays = calculateNetDays(now, finalDate);
 
-        const totalKm = netDays * (configData.km * 2); 
-        const totalMinutes = netDays * (configData.time * 2);
-        const totalHours = Math.round(totalMinutes / 60);
-        const totalLiters = (totalKm * configData.burn) / 100;
-        const totalCost = totalLiters * configData.price;
-        const totalCoffee = netDays * configData.coffee;
-        const totalCoffeeLiters = Math.round(totalCoffee * 0.25);
-
         if (isFirstRun) {
             animateValue(document.getElementById("days-total"), 0, dTotal, 1000);
             animateValue(document.getElementById("days-work"), 0, netDays, 1000);
@@ -819,16 +1030,122 @@
         document.getElementById("m-val").innerText = m;
         document.getElementById("s-val").innerText = s;
 
-        // Sprzętowa synchronizacja potrójnych kół neona
         setTripleCircle("h-pc", (h / 24) * 100);
         setTripleCircle("m-pc", (m / 60) * 100);
         setTripleCircle("s-pc", (s / 60) * 100);
 
-        document.getElementById("stat-km").innerText = Math.round(totalKm).toLocaleString('pl-PL') + " km";
-        document.getElementById("stat-time").innerText = totalHours.toLocaleString('pl-PL') + " godz. (" + Math.round(totalHours / 24) + " dni)";
-        document.getElementById("stat-liters").innerText = Math.round(totalLiters).toLocaleString('pl-PL') + " l";
-        document.getElementById("stat-cost").innerText = totalCost.toFixed(2).toLocaleString('pl-PL') + " zł";
-        document.getElementById("stat-coffee").innerText = totalCoffee.toLocaleString('pl-PL') + " szt. (~" + totalCoffeeLiters + " l)";
+        // ROZBICIE DNI NA BAZIE PROCENTÓW
+        const daysCar = netDays * (configData.pctCar / 100);
+        const daysBus = netDays * (configData.pctBus / 100);
+        const daysBike = netDays * (configData.pctBike / 100);
+        const daysWalk = netDays * (configData.pctWalk / 100);
+
+        // Obliczenia dystansów i czasów dla poszczególnych trybów
+        const kmCar = daysCar * (configData.km * 2);
+        const kmBus = daysBus * (configData.km * 2);
+        const kmBike = daysBike * (configData.km * 2);
+        const kmWalk = daysWalk * (configData.km * 2);
+        const totalKmTotal = kmCar + kmBus + kmBike + kmWalk;
+
+        const minCar = daysCar * (configData.time * 2);
+        const minBus = daysBus * (configData.time * 2);
+        const minBike = daysBike * (configData.time * 2);
+        const minWalk = daysWalk * (configData.time * 2);
+        const totalHoursTotal = Math.round((minCar + minBus + minBike + minWalk) / 60);
+        const totalDaysFromHours = Math.round(totalHoursTotal / 24);
+
+        // Koszty finansowe
+        const totalLiters = (kmCar * configData.burn) / 100;
+        const totalCarCost = totalLiters * configData.price;
+        const totalBusCost = daysBus * 2 * configData.busPrice;
+        const totalCostSum = totalCarCost + totalBusCost;
+
+        // Inne statystyki
+        const totalCoffee = netDays * configData.coffee;
+        const totalCoffeeLiters = Math.round(totalCoffee * 0.25);
+        const totalSteps = Math.round(kmWalk * 1300);
+
+        // DYNAMICZNE BUDOWANIE ELEMENTÓW LISTY PRZEWIJANEJ
+        const statsArea = document.getElementById("stats-area");
+        let htmlRows = "";
+
+        // 1. Wiersze globalne: Łączny dystans i zaktualizowany czas (godziny + dni w nawiasie)
+        htmlRows += `
+            <div class="stat-row">
+                <span class="stat-icon">🗺️</span>
+                <span>Łączny dystans drogi:</span>
+                <span class="stat-value">${Math.round(totalKmTotal).toLocaleString('pl-PL')} km</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-icon">⏱️</span>
+                <span>Czas spędzony w drodze:</span>
+                <span class="stat-value">${totalHoursTotal.toLocaleString('pl-PL')} godz. (~${totalDaysFromHours} dni)</span>
+            </div>`;
+
+        // 2. Sekcja: Samochód
+        if (configData.pctCar > 0) {
+            htmlRows += `
+                <div class="stat-row">
+                    <span class="stat-icon">🚗</span>
+                    <span>Dystans autem (${configData.pctCar}%):</span>
+                    <span class="stat-value">${Math.round(kmCar).toLocaleString('pl-PL')} km</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-icon">⛽</span>
+                    <span>Spalone paliwo:</span>
+                    <span class="stat-value">${Math.round(totalLiters).toLocaleString('pl-PL')} l</span>
+                </div>`;
+        }
+
+        // 3. Sekcja: Autobus
+        if (configData.pctBus > 0) {
+            htmlRows += `
+                <div class="stat-row">
+                    <span class="stat-icon">🚌</span>
+                    <span>Dystans autobusem (${configData.pctBus}%):</span>
+                    <span class="stat-value">${Math.round(kmBus).toLocaleString('pl-PL')} km</span>
+                </div>`;
+        }
+
+        // 4. Sekcja: Rower
+        if (configData.pctBike > 0) {
+            htmlRows += `
+                <div class="stat-row">
+                    <span class="stat-icon">🚲</span>
+                    <span>Dystans rowerem (${configData.pctBike}%):</span>
+                    <span class="stat-value">${Math.round(kmBike).toLocaleString('pl-PL')} km</span>
+                </div>`;
+        }
+
+        // 5. Sekcja: Piechota
+        if (configData.pctWalk > 0) {
+            htmlRows += `
+                <div class="stat-row">
+                    <span class="stat-icon">🚶</span>
+                    <span>Dystans pieszo (${configData.pctWalk}%):</span>
+                    <span class="stat-value">${Math.round(kmWalk).toLocaleString('pl-PL')} km</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-icon">👣</span>
+                    <span>Kroki do przejścia:</span>
+                    <span class="stat-value">${totalSteps.toLocaleString('pl-PL')} szt.</span>
+                </div>`;
+        }
+
+        // 6. Podsumowanie finansów i kawy (zawsze na dole listy)
+        htmlRows += `
+            <div class="stat-row">
+                <span class="stat-icon">💰</span>
+                <span>Koszt transportu razem:</span>
+                <span class="stat-value">${totalCostSum.toFixed(2).toLocaleString('pl-PL')} zł</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-icon">☕</span>
+                <span>Kawa do wypicia:</span>
+                <span class="stat-value">${totalCoffee.toLocaleString('pl-PL')} szt. (~${totalCoffeeLiters} l)</span>
+            </div>`;
+
+        statsArea.innerHTML = htmlRows;
 
         const opt = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById("end-date-display").innerText = finalDate.toLocaleDateString('pl-PL', opt);
